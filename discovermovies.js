@@ -1,3 +1,4 @@
+import { username, Bearer, tmurl } from './config.js';
 const page = 40;  // For pagination, set the page number you want
 const sort_by = 'popularity.desc';  // Sort options like 'popularity.desc', 'release_date.desc', etc.
 
@@ -6,8 +7,7 @@ const options = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0MDk4ZDA0NzU0NjI5MDNlODRmMGZmNjAxYjQwZjRhNCIsIm5iZiI6MTczMTc1MzM5NC41MzE2OTksInN1YiI6IjY1YWU5YzQ3M2UyZWM4MDBlYmYwMDdhNiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ifwkXaTzhpzchKGkClk49qktc7qlj84cD7SdC43PEBY'
-    }
+    Authorization: `${Bearer}`,}
 };
 
 fetch(url, options)
