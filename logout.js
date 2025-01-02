@@ -1,5 +1,5 @@
 import { Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/authentication/session';
+const url = `${tmurl}/3/authentication/session`;
 const options = {
   method: 'DELETE',
   headers: {

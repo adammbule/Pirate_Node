@@ -1,5 +1,5 @@
 import { username, Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/authentication/token/validate_with_login';
+const url = `${tmurl}/3/authentication/token/validate_with_login``;
 const options = {
   method: 'POST',
   headers: {

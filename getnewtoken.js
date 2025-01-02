@@ -1,5 +1,5 @@
 import { Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/authentication/token/new';
+const url = `${tmurl}/3/authentication/token/new``;
 const options = {
   method: 'GET',
   headers: {

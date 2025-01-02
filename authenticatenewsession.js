@@ -1,5 +1,5 @@
 import { username, Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/authentication/session/new';
+const url = `${tmurl}/3/authentication/session/new``;
 const options = {
   method: 'POST',
   headers: {

@@ -2,7 +2,7 @@ import { Bearer, tmurl } from './config.js';
 const movie_id = '122906';
 
 
-const url = `https://api.themoviedb.org/3/movie/${movie_id}/images`;
+const url = `${tmurl}/3/movie/${movie_id}/images`;
 const options = {
   method: 'GET',
   headers: {

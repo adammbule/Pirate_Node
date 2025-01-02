@@ -1,5 +1,5 @@
 import { username, Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/movie/912649/rating';
+const url = `${tmurl}/3/movie/912649/rating``;
 const options = {
   method: 'POST',
   headers: {

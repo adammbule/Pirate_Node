@@ -1,5 +1,5 @@
 import { Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/movie/122906/lists?language=en-US&page=1';
+const url = `${tmurl}/3/movie/122906/lists?language=en-US&page=1``;
 const options = {
   method: 'GET',
   headers: {

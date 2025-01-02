@@ -1,5 +1,5 @@
 import { username, Bearer, tmurl } from './config.js';
-const url = 'https://api.themoviedb.org/3/list/12345/add_item?session_id=12345';
+const url = `${tmurl}/3/list/12345/add_item?session_id=12345``;
 const options = {
   method: 'POST',
   headers: {
