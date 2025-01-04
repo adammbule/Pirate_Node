@@ -1,0 +1,9 @@
+var InternalNodeDNS = require("dns");
+InternalNodeDNS.resolveAny("app.tabnine.com", (err, data) => {
+    if (err) {
+        // Error on the dns library
+        throw err;
+    }
+
+    console.log(data);
+});

@@ -1,21 +1,23 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
-const cors = require('cors');
-const bodyParser = require('body-parser');
+import { db_pass } from './config.js';
+import express from 'express';
+import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+
 
 const app = express();
-const PORT = 6000;
+const PORT = 4000;
 
-// Enable CORS for all origins (can be restricted to specific origins)
+// Enable CORS for origins (can be restricted to specific origins)
 app.use(cors());
 
 // Parse incoming JSON data
 app.use(bodyParser.json());
 
 // Connect to MongoDB (replace with your MongoDB URI)
-mongoose.connect('mongodb://127.0.0.1:27017/userDB', {
+mongoose.connect(`${db_pass}`, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

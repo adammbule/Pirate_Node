@@ -1,20 +1,43 @@
 // server.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
+import { db_pass } from './config.js';
+import express from'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import mongoose from'mongoose';
+//import dotenv from 'dotenv';
+import bcrypt from 'bcrypt';
 
+// Initialize dotenv to read environment variables
+//dotenv.config();
+
+// Set up express app
 const app = express();
 const port = 3000;
 
+// Middleware setup
 app.use(cors());
-// Middleware to parse JSON request bodies
 app.use(bodyParser.json());
 
-// In-memory storage for users (this can be replaced by a database)
-let users = [];
+// MongoDB URI from .env file
+const mongoURI = `${db_pass}`;
+
+// Connect to MongoDB
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('MongoDB connection error:', err));
+
+// Define the User schema
+const userSchema = new mongoose.Schema({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+});
+
+// Create the User model based on the schema
+const User = mongoose.model('User', userSchema);
 
 // POST route to create a new user
-app.post('/create-user', (req, res) => {
+app.post('/create-user', async (req, res) => {
   const { username, password, email } = req.body;
 
   // Simple validation (ensure both username and password are provided)
@@ -22,27 +45,41 @@ app.post('/create-user', (req, res) => {
     return res.status(400).json({ message: 'Username, email and password are required.' });
   }
 
+  try {
+    // Check if email exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(409).json({ message: 'Email already exists.' });
+    }
 
-  //check if email exists
-    const existingEmail = users.find(user => user.email === email);
-      if (existingEmail) {
-        return res.status(409).json({ message: 'Email already exists.' });
-      }
+    // Check if the username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+      return res.status(409).json({ message: 'Username already exists.' });
+    }
 
-  // Check if the username already exists
-  const existingUser = users.find(user => user.username === username);
-  if (existingUser) {
-    return res.status(409).json({ message: 'Username already exists.' });
+    // Hash the password before storing it
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create a new user document
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+      email,
+    });
+
+    // Save the new user to MongoDB
+    await newUser.save();
+
+    // Respond with the created user (excluding password)
+    res.status(201).json({
+      message: 'User created successfully.',
+      user: { username: newUser.username, email: newUser.email },
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Server error.' });
   }
-
-
-
-  // Store the new user (in memory for now)
-  const newUser = { username, password, email }; // In a real-world app, you would hash the password
-  users.push(newUser);
-
-  // Respond with the created user
-  res.status(201).json({ message: 'User created successfully.', user: newUser });
 });
 
 // Start the server
