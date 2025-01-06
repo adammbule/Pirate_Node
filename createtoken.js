@@ -1,4 +1,4 @@
-import { username, Bearer, tmurl } from './config.js';
+import { email, Bearer, tmurl } from './config.js';
 
 
 const url = `${tmurl}/3/authentication/token/new`;

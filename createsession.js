@@ -1,5 +1,5 @@
-import { username, Bearer, tmurl } from './config.js';
-const url = `${tmurl}/3/authentication/session/new``;
+import { email, Bearer, tmurl, requesttoken } from './config.js';
+const url = `${tmurl}/3/authentication/session/new`;
 const options = {
   method: 'POST',
   headers: {
