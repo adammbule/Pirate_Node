@@ -1,6 +1,10 @@
 import { tmuse, tmpas, Bearer, tmurl, finaltoken } from './config.js';
 import express from'express';
+require('dotenv').config();
 
+const tmurl3 = process.env.tmurl2;
+
+console.log(apiKey);
 
 const url = `${tmurl}/3/authentication/token/validate_with_login`;
 const options = {

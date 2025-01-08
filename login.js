@@ -6,7 +6,6 @@ import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-
 const app = express();
 const PORT = 4000;
 
@@ -27,6 +26,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
+  sessionKey: { type: String, required: false },  // Add sessionKey field to store the token
 });
 
 // Create a Mongoose model for User
@@ -55,10 +55,15 @@ app.post('/login', async (req, res) => {
     // If passwords match, generate a JWT token for the user
     const token = jwt.sign({ userId: user._id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
 
-    // Respond with the token (you can also send user details if needed)
+    // Save the token (sessionKey) in the user's document
+    user.sessionKey = token;
+    await user.save(); // Save the user document with the updated sessionKey
+
+    // Respond with the token and user details (if needed)
     res.status(200).json({
       message: 'Login successful',
       token: token,
+      sessionKey: token, // Optionally return the sessionKey in the response
     });
   } catch (error) {
     res.status(500).json({ message: 'Server error', error: error.message });
