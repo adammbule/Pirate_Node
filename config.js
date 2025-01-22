@@ -1,4 +1,3 @@
-// config.js
 export const email = "asad3@gmail.com";
 export const password = 'asad3';
 export const requesttoken = '89ac669637c61a6234e7eccc757675fee06a6f70';
