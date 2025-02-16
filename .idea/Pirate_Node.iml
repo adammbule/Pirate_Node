@@ -2,7 +2,18 @@
 <module type="JAVA_MODULE" version="4">
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
-    <content url="file://$MODULE_DIR$" />
+    <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/base64-js" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/bignumber.js" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/extend" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gaxios" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gcp-metadata" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/google-auth-library" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/google-logging-utils" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/gtoken" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/json-bigint" />
+      <excludeFolder url="file://$MODULE_DIR$/node_modules/uuid" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>

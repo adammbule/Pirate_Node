@@ -7,4 +7,4 @@ export const db_pass = 'mongodb+srv://Chief:Kangar00@shujaa.ay5ro.mongodb.net/?r
 export const tmuse = 'adammbule';
 export const tmpas = 'EbvJNN6XX!73UPb';
 export const finaltoken = 'b792a91faae13528331b4f31e05e4487362bc7a9';
-
+export const clientid = '653453076719-a628a1e0ojskef7okjv13ltjubdmlvuj.apps.googleusercontent.com';
