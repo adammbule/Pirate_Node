@@ -26,7 +26,7 @@ const verifyJWT = (req, res, next) => {
   console.log('Token received:', token); // Log the token to verify
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the provided token
+    const decoded = jwt.verify(newToken, process.env.JWT_SECRET); // Verify the provided token
     console.log('Decoded token:', decoded); // Log the decoded token to verify
     req.user = decoded; // Attach decoded user data to the request object
     next(); // Proceed to the next middleware/route handler
