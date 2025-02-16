@@ -1,5 +1,7 @@
 import { tmuse, tmpas, Bearer, tmurl, finaltoken } from './config.js';
 import express from'express';
+import dotenv from 'dotenv';
+
 require('dotenv').config();
 
 const tmurl3 = process.env.tmurl2;

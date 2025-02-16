@@ -3,6 +3,6 @@ import getTrendingSeries from '../controllers/seriesController.js'; // Import co
 
 const router = express.Router();
 
-router.get('/trending', getTrendingSeries); // Use the imported function
+router.get('/trendingseries', getTrendingSeries); // Use the imported function
 
 export default router;
