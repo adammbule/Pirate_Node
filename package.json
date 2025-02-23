@@ -2,26 +2,27 @@
     "name": "piratecoin",
     "version": "1.0.0",
     "description": "Backend for fetcing movies/series details and user auth",
-    "type": "module", 
+    "type": "module",
     "main": "index.js",
     "scripts": {
-      "start": "node index.js",
-      "dev": "node index.js",
-      "build": "node index.js",
-      "test": "echo \"No tests implemented yet\"" 
+        "start": "node ./api/index.js",
+        "dev": "node index.js",
+        "build": "node index.js",
+        "test": "echo \"No tests implemented yet\""
     },
     "dependencies": {
-      "bcrypt": "^5.1.1",
-      "cors": "^2.8.5",
-      "dotenv": "^16.4.7",
-      "express": "^4.21.2",
-      "google-auth-library": "^9.15.1",
-      "jsonwebtoken": "^9.0.2",
-      "mongoose": "^8.10.1"
+        "bcrypt": "^5.1.1",
+        "cors": "^2.8.5",
+        "dotenv": "^16.4.7",
+        "express": "^4.21.2",
+        "google-auth-library": "^9.15.1",
+        "jsonwebtoken": "^9.0.2",
+        "mongoose": "^8.10.1",
+        "serverless-http": "^3.2.0"
     },
     "devDependencies": {
-      "nodemon": "^3.0.0"
+        "nodemon": "^3.0.0"
     },
     "author": "Toranaga Sama",
-    "license": "Open-Source" 
-  }
+    "license": "Open-Source"
+}
