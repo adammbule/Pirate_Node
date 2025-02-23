@@ -14,7 +14,7 @@ const port = 4000;
 // Middleware to parse JSON request bodies
 app.use(express.json());
 
-const allowedOrigins = ['http://localhost:8080', 'https://your-frontend-domain.com']; // Replace with your actual frontend URL
+const allowedOrigins = ['*']; // Replace with your actual frontend URL
 app.use(cors({
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
