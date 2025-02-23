@@ -10,7 +10,7 @@ import { waitUntil } from '@vercel/functions';
 
 
 const app = express();
-//const port = 4000;
+const port = 4000;
 
 // Middleware to parse JSON request bodies
 app.use(express.json());
@@ -36,6 +36,6 @@ app.get('/api', (req, res) => {
 
 export default serverless(app);
 
-//app.listen(port, () => {
-  //console.log(`We are listening at http://localhost:${port}`);
-//});
+app.listen(port, () => {
+  console.log(`We are listening at http://localhost:${port}`);
+});
