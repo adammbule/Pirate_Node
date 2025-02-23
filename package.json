@@ -4,8 +4,7 @@
     "description": "Backend for fetcing movies/series details and user auth",
     "type": "module",
     "main": "./api/index.js",
-    "scripts": {
-    },
+    "scripts": {},
     "dependencies": {
         "bcrypt": "^5.1.1",
         "cors": "^2.8.5",
