@@ -12,29 +12,43 @@ import { waitUntil } from '@vercel/functions';
 const app = express();
 const port = 4000;
 
-// Middleware to parse JSON request bodies
-app.use(express.json());
+        // Middleware to parse JSON request bodies
+        app.use(express.json());
 
-const allowedOrigins = ['*']; // Replace with your actual frontend URL
-app.use(cors({
-  origin: allowedOrigins,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true, // Allow cookies if needed
-}));
+        const allowedOrigins = [
+          'http://localhost:8080', // Your local frontend
+          'http://localhost:5173', // Your local frontend
+          'https://your-frontend.com', // Your production frontend
+          'https://accounts.google.com', // Google accounts
+          'https://www.googleapis.com', // Google APIs
+        ];
 
-// Mount Routes
-app.use('/api/users', userRoutes);
-app.use('/api/movies', movieRoutes);
-app.use('/api/series', seriesRoutes);
-app.use('/api/wallet', walletRoutes);
-app.use('/api/collection', collectionRoutes);
+        app.use(cors({
+          origin: function (origin, callback) {
+            if (!origin) return callback(null, true);
+            if (allowedOrigins.indexOf(origin) === -1) {
+              const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+              return callback(new Error(msg), false);
+            }
+            return callback(null, true);
+          },
+          methods: ['GET', 'POST', 'PUT', 'DELETE'],
+          credentials: true, // Allow cookies if needed
+        }));
 
-// Handle requests to /api
-app.get('/api', (req, res) => {
-  res.send('Welcome to Piratecoin! Toranaga Summer thanks you for supporting us. The project aims to make motion pictures affordable, easily accessible to everyone and curb pirating of content. Happy content sharing folks!!! ');
-});
+        // Mount Routes
+        app.use('/api/users', userRoutes);
+        app.use('/api/movies', movieRoutes);
+        app.use('/api/series', seriesRoutes);
+        app.use('/api/wallet', walletRoutes);
+        app.use('/api/collection', collectionRoutes);
 
-export default serverless(app);
+        // Handle requests to /api
+        app.get('/api', (req, res) => {
+          res.send('Welcome to Piratecoin! Toranaga Summer thanks you for supporting us. The project aims to make motion pictures affordable, easily accessible to everyone and curb pirating of content. Happy content sharing folks!!! ');
+        });
+
+        export default serverless(app);
 
 app.listen(port, () => {
   console.log(`We are listening at http://localhost:${port}`);
