@@ -24,7 +24,4 @@ export const createWallet = async (req, res) => {
   }
 };
 
-// Update wallet holdings
-export const updateWalletHoldings = async (req, res) => {
-  // ... (Your updateWalletHoldings logic)
-};
+

@@ -134,9 +134,6 @@ const googleLogin = async (req, res) => {
   }
 };
 
-export const logout = async (req, res) => {
-  // ... (Your existing code for fetching movies)
-};
 
 export { login, googleLogin };
 

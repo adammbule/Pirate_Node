@@ -4,9 +4,9 @@ import { getTrendingMovies, getmovieImage, discovermovies, searchformovies, addr
 import { verifyJWT } from '../middleware/authMiddleware.js';
 
 router.get('/trendingmovies', getTrendingMovies);
-router.get('/image', getmovieImage);
-router.get('/discovermovies', discovermovies);
-router.get('searchformovie', searchformovies);
-router.get('addrating', addrating);
+//router.get('/image', getmovieImage);
+//router.get('/discovermovies', discovermovies);
+//router.get('/searchformovie', searchformovies);
+//router.get('/addrating', addrating);
 
 export default router;

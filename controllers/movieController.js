@@ -29,21 +29,5 @@ export const getTrendingMovies = async (req, res) => {
 };
 
 // Add your other movie-related functions (addrating, searchformovies, discovermovies, etc.) here
-export const addrating = async (req, res) => {
-  // ... (Your existing code for fetching movies)
-};
-
-export const searchformovies = async (req, res) => {
-  // ... (Your existing code for fetching movies)
-};
-
-export const discovermovies = async (req, res) => {
-  // ... (Your existing code for fetching movies)
-};
-
-export const getmovieImage = async (req, res) => {
-  // ... (Your existing code for fetching movies)
-};
-
 
 export default getTrendingMovies; // Default export
