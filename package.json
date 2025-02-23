@@ -5,10 +5,6 @@
     "type": "module",
     "main": "./api/index.js",
     "scripts": {
-        "start": "node ./api/index.js",
-        "dev": "node ./api/index.js",
-        "build": "node ./api/index.js",
-        "test": "echo \"No tests implemented yet\""
     },
     "dependencies": {
         "bcrypt": "^5.1.1",
