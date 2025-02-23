@@ -1,4 +1,4 @@
-import Series from '../models/Series.js'; // Import the Series model (with .js extension)
+import Series from '../models/series.js'; // Import the Series model (with .js extension)
 
 // Define controller methods
 export const getTrendingSeries = async (req, res) => {

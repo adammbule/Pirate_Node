@@ -1,7 +1,7 @@
 import { OAuth2Client } from 'google-auth-library'; 
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; // Assuming bcrypt is needed
-import User from '../models/User.js'; // Assuming you have a User model defined elsewhere
+import User from '../models/user.js'; // Assuming you have a User model defined elsewhere
 import { clientid, db_pass } from '../config.js'; // Ensure this is coming from your config file
 import mongoose from 'mongoose'; // Mongoose to handle MongoDB connection
 
