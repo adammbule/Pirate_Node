@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Backend for fetcing movies/series details and user auth",
     "type": "module",
-    "main": "./api/index.js",
+    "main": "./index.js",
     "scripts": {},
     "dependencies": {
         "bcrypt": "^5.1.1",
