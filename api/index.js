@@ -35,6 +35,6 @@ app.get('/api', (req, res) => {
 
 export default serverless(app);
 
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`);
-});
+//app.listen(port, () => {
+  console.log(`We are listening at http://localhost:${port}`);
+//});

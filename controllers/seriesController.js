@@ -12,3 +12,4 @@ export const getTrendingSeries = async (req, res) => {
 };
 
 export default getTrendingSeries;
+

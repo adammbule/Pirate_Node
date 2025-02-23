@@ -1,4 +1,4 @@
-import { OAuth2Client } from 'google-auth-library'; 
+import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt'; // Assuming bcrypt is needed
 import User from '../models/user.js'; // Assuming you have a User model defined elsewhere
@@ -139,3 +139,5 @@ export const logout = async (req, res) => {
 };
 
 export { login, googleLogin };
+
+
