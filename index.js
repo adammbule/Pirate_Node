@@ -1,10 +1,10 @@
 import express from 'express';
 import serverless from 'serverless-http';
-import userRoutes from '../routes/userRoutes.js';  // Use .js extension for ES module imports
-import movieRoutes from '../routes/movieRoutes.js';
-import seriesRoutes from '../routes/seriesRoutes.js';
-import walletRoutes from '../routes/walletRoutes.js';
-import collectionRoutes from '../routes/collectionRoutes.js';
+import userRoutes from './routes/userRoutes.js';  // Use .js extension for ES module imports
+import movieRoutes from './routes/movieRoutes.js';
+import seriesRoutes from './routes/seriesRoutes.js';
+import walletRoutes from './routes/walletRoutes.js';
+import collectionRoutes from './routes/collectionRoutes.js';
 import cors from 'cors';
 
 
@@ -35,6 +35,6 @@ app.get('/api', (req, res) => {
 
 export default serverless(app);
 
-//app.listen(port, () => {
+app.listen(port, () => {
   console.log(`We are listening at http://localhost:${port}`);
-//});
+});
