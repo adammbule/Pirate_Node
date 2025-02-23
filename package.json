@@ -3,11 +3,11 @@
     "version": "1.0.0",
     "description": "Backend for fetcing movies/series details and user auth",
     "type": "module",
-    "main": "index.js",
+    "main": "./api/index.js",
     "scripts": {
         "start": "node ./api/index.js",
-        "dev": "node index.js",
-        "build": "node index.js",
+        "dev": "node ./api/index.js",
+        "build": "node ./api/index.js",
         "test": "echo \"No tests implemented yet\""
     },
     "dependencies": {
