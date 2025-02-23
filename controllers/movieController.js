@@ -46,4 +46,4 @@ export const getmovieImage = async (req, res) => {
 };
 
 
-//export default getTrendingMovies; // Default export
+export default getTrendingMovies; // Default export
