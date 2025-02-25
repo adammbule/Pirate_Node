@@ -1,5 +1,6 @@
 import { Bearer, tmurl } from './config.js';
-const url = `${tmurl}/3/tv/218145/season/1?language=en-US``;
+
+const url = `${tmurl}/3/tv/66732/season/1?language=en-US`;
 const options = {
   method: 'GET',
   headers: {

@@ -1,9 +1,9 @@
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt'; // Assuming bcrypt is needed
-import User from '../models/user.js'; // Assuming you have a User model defined elsewhere
-import { clientid, db_pass } from '../config.js'; // Ensure this is coming from your config file
-import mongoose from 'mongoose'; // Mongoose to handle MongoDB connection
+import bcrypt from 'bcrypt';
+import User from '../models/user.js';
+import { clientid, db_pass } from '../config.js';
+import mongoose from 'mongoose';
 
 // MongoDB Connection Logic
 mongoose.connect(db_pass, {
@@ -27,19 +27,18 @@ mongoose.connection.on('disconnected', () => {
 // OAuth2 Client setup for Google login
 const client = new OAuth2Client(clientid);
 
-// Regular login function (already defined in your code)
+// Regular login function
 const login = async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    console.log(`Login attempt for email: ${email}`); // Log email for debugging
+    console.log(`Login attempt for email: ${email}`);
 
     // Find user by email
     const user = await User.findOne({ email: email });
 
-    // If the user is not found, return error
     if (!user) {
-      console.log(`User with email ${email} not found`); // Log when user is not found
+      console.log(`User with email ${email} not found`);
       return res.status(400).json({ message: 'User not found' });
     }
 
@@ -47,44 +46,41 @@ const login = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      console.log(`Incorrect password for email: ${email}`); // Log when password is incorrect
+      console.log(`Incorrect password for email: ${email}`);
       return res.status(401).json({ message: 'Incorrect password' });
     }
 
     // If passwords match, generate a JWT token for the user
     const token = jwt.sign({ userId: user._id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
 
-    // Log token and user details
     console.log(`Login successful for user: ${user.username} (Email: ${user.email})`);
     console.log('Generated JWT Token:', token);
 
-    // Save the token (sessionKey) in the user's document
     user.sessionKey = token;
-    await user.save(); // Save the user document with the updated sessionKey
+    await user.save();
 
-    // Respond with the token and user details
     res.status(200).json({
       message: 'Login successful',
       token: token,
-      sessionKey: token, // Optionally return the sessionKey in the response
+      sessionKey: token,
     });
   } catch (error) {
-    console.error('Server error during login:', error.message); // Log server errors
+    console.error('Server error during login:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
 
 // Google login function
 const googleLogin = async (req, res) => {
-  const { idToken } = req.body; // The ID token from Google
+  const { idToken } = req.body;
 
   try {
-    console.log('Google login attempt...'); // Log when Google login starts
+    console.log('Google login attempt...');
 
     // Verify the Google ID token
     const ticket = await client.verifyIdToken({
       idToken: idToken,
-      audience: clientid, // Your Google Client ID
+      audience: clientid,
     });
 
     // Extract the payload from the ticket
@@ -92,20 +88,17 @@ const googleLogin = async (req, res) => {
     const email = payload?.email;
     const username = payload?.name;
 
-    // Log the Google payload (username and email)
     console.log(`Google login successful for email: ${email}, username: ${username}`);
 
-    // Check if the user exists in the database
+    // Check if the user exists
     let user = await User.findOne({ email: email });
 
     if (!user) {
-      // If the user doesn't exist, create a new user
-      console.log(`Creating new user for email: ${email}`); // Log when creating a new user
-
+      console.log(`Creating new user for email: ${email}`);
       user = new User({
         email: email,
         username: username,
-        password: undefined, // You can leave the password empty as it's not needed for Google login
+        password: undefined, // No password needed for Google login
       });
       await user.save();
     } else {
@@ -115,26 +108,62 @@ const googleLogin = async (req, res) => {
     // Generate a JWT token for the user
     const token = jwt.sign({ userId: user._id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
 
-    // Log token
     console.log('Generated JWT Token:', token);
 
-    // Save the token (sessionKey) in the user's document
     user.sessionKey = token;
     await user.save();
 
-    // Respond with the token
     res.status(200).json({
       message: 'Google login successful',
       token: token,
-      sessionKey: token, // Return sessionKey (JWT token)
+      sessionKey: token,
     });
   } catch (error) {
-    console.error('Error during Google login:', error.message); // Log any errors
+    console.error('Error during Google login:', error.message);
     res.status(500).json({ message: 'Google login error', error: error.message });
   }
 };
 
+// Create new user function
+const createuser = async (req, res) => {
+  const { username, email, password } = req.body;
 
-export { login, googleLogin };
+  try {
+    // Check if the user already exists
+    const existingUser = await User.findOne({ email: email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists with this email' });
+    }
 
+    // Hash the password before saving
+    const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create the new user
+    const newUser = new User({
+      username: username,
+      email: email,
+      password: hashedPassword, // Store hashed password
+    });
+
+    // Save the new user to the database
+    await newUser.save();
+
+    // Generate a JWT token for the new user
+    const token = jwt.sign({ userId: newUser._id, username: newUser.username }, 'your_jwt_secret', { expiresIn: '1h' });
+
+    // Save the token (sessionKey) in the user's document
+    newUser.sessionKey = token;
+    await newUser.save();
+
+    res.status(201).json({
+      message: 'User created successfully',
+      token: token,
+      sessionKey: token,
+    });
+  } catch (error) {
+    console.error('Error creating user:', error.message);
+    res.status(500).json({ message: 'Error creating user', error: error.message });
+  }
+};
+
+export { login, googleLogin, createuser };
