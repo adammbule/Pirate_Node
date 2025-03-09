@@ -8,4 +8,5 @@ export const tmuse = 'adammbule';
 export const tmpas = 'EbvJNN6XX!73UPb';
 export const finaltoken = 'b14f0886717ff137cf5e22515f8d33b699c62e5c';
 export const clientid = '653453076719-rgmdbrp1eka5rni16q7mrcfep5t3vcbl.apps.googleusercontent.com';
+export const clientidapp = '653453076719-a628a1e0ojskef7okjv13ltjubdmlvuj.apps.googleusercontent.com';
 

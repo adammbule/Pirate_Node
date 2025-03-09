@@ -2,8 +2,9 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
-import { clientid, db_pass } from '../config.js';
+import { clientid, db_pass, clientidapp } from '../config.js';
 import mongoose from 'mongoose';
+import {GoogleAuth} from 'google-auth-library';
 
 // MongoDB Connection Logic
 mongoose.connect(db_pass, {
@@ -132,7 +133,7 @@ const createuser = async (req, res) => {
     // Check if the user already exists
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
-      return res.status(400).json({ message: 'User already exists with this email' });
+      return res.status(300).json({ message: 'User already exists with this email' });
     }
 
     // Hash the password before saving
