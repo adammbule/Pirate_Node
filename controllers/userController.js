@@ -1,3 +1,4 @@
+import dotenv from "dotenv";
 import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
@@ -6,8 +7,9 @@ import { clientid, db_pass, clientidapp } from '../config.js';
 import mongoose from 'mongoose';
 import {GoogleAuth} from 'google-auth-library';
 
+dotenv.config({ path: "../subkey.env" });
 // MongoDB Connection Logic
-mongoose.connect(db_pass, {
+mongoose.connect(process.env.db_pass, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   connectTimeoutMS: 30000,  // Optional: Timeout after 30 seconds
@@ -26,7 +28,7 @@ mongoose.connection.on('disconnected', () => {
 });
 
 // OAuth2 Client setup for Google login
-const client = new OAuth2Client(clientid);
+const client = new OAuth2Client(process.env.clientid);
 
 // Regular login function
 const login = async (req, res) => {
@@ -81,7 +83,7 @@ const googleLogin = async (req, res) => {
     // Verify the Google ID token
     const ticket = await client.verifyIdToken({
       idToken: idToken,
-      audience: clientid,
+      audience: process.env.clientid,
     });
 
     // Extract the payload from the ticket
