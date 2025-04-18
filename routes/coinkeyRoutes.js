@@ -6,7 +6,7 @@ import {
   createTierIIIRental,
   getTierIIIRenters,
   revokeTierIIIRental
-} from '../controllers/coinKeyController.js';
+} from '../controllers/coinkeyController.js';
 import { verifyJWT } from '../middleware/authMiddleware.js';
 
 
