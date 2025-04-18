@@ -10,15 +10,19 @@
     "dependencies": {
         "@vercel/functions": "^2.0.0",
         "bcrypt": "^5.1.1",
+        "bitcoinjs-lib": "^6.1.7",
+        "bitcoinjs-message": "^2.2.0",
         "cors": "^2.8.5",
         "dotenv": "^16.4.7",
+        "ecpair": "^3.0.0",
         "express": "^4.21.2",
         "google-auth-library": "^9.15.1",
         "jsonwebtoken": "^9.0.2",
         "mongoose": "^8.10.1",
         "node-fetch": "^3.3.2",
         "rate-limiter-flexible": "^7.0.0",
-        "serverless-http": "^3.2.0"
+        "serverless-http": "^3.2.0",
+        "tiny-secp256k1": "^2.2.3"
     },
     "devDependencies": {
         "nodemon": "^3.0.0"

@@ -1,14 +1,13 @@
 import mongoose from 'mongoose';
 
 const walletSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, unique: true }, // Reference to the User model
-  holdings: [{  // Array of holdings
-    asset: { type: String, required: true }, // E.g., "BTC", "ETH"
-    quantity: { type: Number, required: true },
-    // ...other holding fields
-  }],
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  publicKey: { type: String, required: true },
+  privateKey: { type: String, required: true }, // encrypted!
+  iv: { type: String, required: true },
+  holdings: [{ type: String }],
+  coinKeys: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CoinKey' }],
+  createdAt: { type: Date, default: Date.now }
 });
 
-const Wallet = mongoose.model('Wallet', walletSchema);
-
-export default Wallet;
+export default mongoose.model('Wallet', walletSchema);
