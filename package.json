@@ -4,7 +4,7 @@
     "description": "Backend for fetcing movies/series details and user auth",
     "type": "module",
     "scripts": {
-        "start": "node ./api/index.js",
+        "prod": "node ./api/index.js",
         "dev": "nodemon ./api/index.js"
     },
     "dependencies": {

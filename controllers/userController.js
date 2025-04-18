@@ -3,7 +3,6 @@ import { OAuth2Client } from 'google-auth-library';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/user.js';
-import { clientid, db_pass, clientidapp } from '../config.js';
 import mongoose from 'mongoose';
 import {GoogleAuth} from 'google-auth-library';
 
@@ -54,7 +53,7 @@ const login = async (req, res) => {
     }
 
     // If passwords match, generate a JWT token for the user
-    const token = jwt.sign({ userId: user._id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     console.log(`Login successful for user: ${user.username} (Email: ${user.email})`);
     console.log('Generated JWT Token:', token);
@@ -109,7 +108,7 @@ const googleLogin = async (req, res) => {
     }
 
     // Generate a JWT token for the user
-    const token = jwt.sign({ userId: user._id, username: user.username }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     console.log('Generated JWT Token:', token);
 
@@ -152,7 +151,7 @@ const createuser = async (req, res) => {
     await newUser.save();
 
     // Generate a JWT token for the new user
-    const token = jwt.sign({ userId: newUser._id, username: newUser.username }, 'your_jwt_secret', { expiresIn: '1h' });
+    const token = jwt.sign({ userId: newUser._id, username: newUser.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
     // Save the token (sessionKey) in the user's document
     newUser.sessionKey = token;

@@ -67,7 +67,7 @@ app.use('/api/collection', collectionRoutes);
 
 // Handle requests to /api
 app.get('/api', (req, res) => {
-  res.send('Welcome to Piratecoin! Toranaga Summer thanks you for supporting us. The project aims to make motion pictures affordable, easily accessible to everyone and curb pirating of content. Happy content sharing folks!!!');
+  res.send('Welcome to Piratecoin! Toranaga thanks you for supporting us. The project aims to make motion pictures affordable, easily accessible to everyone and curb pirating of content. Happy content sharing folks!!!');
 });
 
 // Export the serverless version for Vercel

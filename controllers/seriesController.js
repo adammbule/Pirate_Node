@@ -1,14 +1,26 @@
-import { Bearer, tmurl } from '../config.js'; // Ensure Bearer and tmurl are imported correctly
 import fetch from 'node-fetch'; // Ensure node-fetch is imported
+import dotenv from 'dotenv';
+
+dotenv.config({ path: "../subkey.env" });
+
+const tmdbUrl = process.env.tmurl2;
+const bearer = process.env.Bearer;
 
 // Define controller methods
 export const getTrendingSeries = async (req, res) => {
-  const url = `${tmurl}/3/trending/tv/day?language=en-US`;
+  // Extract Bearer token from Authorization header
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication token is missing' });
+  }
+
+  const url = `${tmdbUrl}/3/trending/tv/day?language=en-US`;
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `${Bearer}`,
+      Authorization: `${bearer}`, // Use the Bearer token from the request header
     },
   };
 
@@ -27,15 +39,22 @@ export const getTrendingSeries = async (req, res) => {
 };
 
 export const getSeriesDetails = async (req, res) => {
+  // Extract Bearer token from Authorization header
+  const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication token is missing' });
+  }
+
   const { seriesid } = req.params; // Get the seriesid from the URL parameter
-  const url = `${tmurl}/3/tv/${seriesid}?language=en-US`; // Use the seriesid in the URL
+  const url = `${tmdbUrl}/3/tv/${seriesid}?language=en-US`; // Use the seriesid in the URL
   console.log('Request URL:', url);
 
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `${Bearer}`, // Use Bearer token for authorization
+      Authorization: `${bearer}`, // Use the Bearer token from the request header
     },
   };
 
@@ -54,17 +73,25 @@ export const getSeriesDetails = async (req, res) => {
 };
 
 export const getSeasonDetails = async (req, res) => {
-  const { seriesid } = req.params; // Get the seriesid from the URL parameter
-  const { season } = req.params;
+  // Extract Bearer token from Authorization header
+  const token = req.headers.authorization?.split(' ')[1];
 
-  const url = `${tmurl}/3/tv/${seriesid}/season/${season}?language=en-US`;
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication token is missing' });
+  }
+
+  const { seriesid, season } = req.params; // Get the seriesid and season from the URL parameters
+
+  const url = `${tmdbUrl}/3/tv/${seriesid}/season/${season}?language=en-US`;
 
   console.log('Request URL:', url);
+
   const options = {
     method: 'GET',
     headers: {
       accept: 'application/json',
-      Authorization: `${Bearer}`,}
+      Authorization: `Bearer ${token}`, // Use the Bearer token from the request header
+    },
   };
 
   try {
@@ -74,11 +101,9 @@ export const getSeasonDetails = async (req, res) => {
       throw new Error(`HTTP error ${response.status}: ${errorText}`);
     }
     const json = await response.json();
-    return res.json(json); // Return the fetched series details
+    return res.json(json); // Return the fetched season details
   } catch (error) {
     console.error('Error fetching season details:', error);
     return res.status(500).json({ message: 'Error fetching season details' });
   }
 };
-
-
