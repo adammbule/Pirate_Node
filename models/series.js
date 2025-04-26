@@ -22,4 +22,4 @@ const seriesSchema = new mongoose.Schema({
 
 const Series = mongoose.model('Series', seriesSchema);
 
-export default Series;
+export default mongoose.models.Series || mongoose.model('Series', seriesSchema);

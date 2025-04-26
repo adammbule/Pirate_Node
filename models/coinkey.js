@@ -1,14 +1,13 @@
-// models/coinkey.js
-
 import mongoose from 'mongoose';
 
 const coinKeySchema = new mongoose.Schema({
-  movieId: String,
-  tier: { type: String, enum: ['TierI', 'TierII', 'TierIII'], required: true },
-  wallet: { type: mongoose.Schema.Types.ObjectId, ref: 'Wallet' },
-  keyReference: String,
-  parentKey: { type: mongoose.Schema.Types.ObjectId, ref: 'CoinKey' }, // For Tier III
-  rentalExpires: Date, // Only for Tier III
+  movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }, // optional
+  mintedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Wallet', required: false },
+  title: { type: String, required: false },
+  description: { type: String },
+  totalCopiesAllowed: { type: Number, default: 100000 },
+  tier: { type: Number, default: 1 },
+  createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('CoinKey', coinKeySchema);
+export default mongoose.models.CoinKey || mongoose.model('CoinKey', coinKeySchema);

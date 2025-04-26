@@ -10,4 +10,4 @@ const walletSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('Wallet', walletSchema);
+export default mongoose.models.Wallet || mongoose.model('Wallet', walletSchema);

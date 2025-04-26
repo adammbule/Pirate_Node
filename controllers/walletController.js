@@ -85,9 +85,9 @@ export const getWalletById = async (req, res) => {
 // GET /wallet/:id/holdings - Get holdings
 export const getWalletHoldings = async (req, res) => {
   try {
-    const wallet = await CoinKey.findById(req.params.walletId);
+    const wallet = await Wallet.findById(req.params.walletId);
     if (!wallet) return res.status(404).json({ message: 'Wallet not found' });
-    res.json({ holdings: wallet });
+    res.json({ holdings: wallet.coinKeys });
   } catch (error) {
     console.error("Error fetching holdings:", error);
     res.status(500).json({ message: "Error fetching wallet holdings" });

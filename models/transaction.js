@@ -8,4 +8,4 @@ const transactionSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now }
 });
 
-export default mongoose.model('Transaction', transactionSchema);
+export default mongoose.models.Transaction || mongoose.model('Transaction', transactionSchema);

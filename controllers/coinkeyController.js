@@ -1,27 +1,37 @@
+import mongoose from 'mongoose';
 import CoinKey from '../models/coinkey.js';
 import Wallet from '../models/wallet.js';
 import Transaction from '../models/transaction.js';
-// import bitcoinMessage if you're adding signature verification
-// import * as bitcoinMessage from 'bitcoinjs-message';
 
-
-// 1. Mint a Tier I CoinKey
 export const mintCoinKey = async (req, res) => {
   try {
     const userId = req.user.userId;
-    const { movieId, keyReference } = req.body;
+    const { movieId, keyReference, title, description } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(movieId)) {
+      return res.status(400).json({ message: 'Invalid movie ID format' });
+    }
 
     const wallet = await Wallet.findOne({ user: userId });
     if (!wallet) return res.status(404).json({ message: 'Wallet not found' });
 
-    const existing = await CoinKey.findOne({ movieId, tier: 'TierI' });
-    if (existing) return res.status(400).json({ message: 'Tier I CoinKey already exists for this movie' });
+    const existing = await CoinKey.findOne({
+      movieId: new mongoose.Types.ObjectId(movieId),
+      tier: 1
+    });
+
+    if (existing) {
+      return res.status(400).json({ message: 'Tier I CoinKey already exists for this movie' });
+    }
 
     const coinKey = new CoinKey({
-      movieId,
-      tier: 'TierI',
+      movieId: new mongoose.Types.ObjectId(movieId),
+      tier: 1,
       wallet: wallet._id,
-      keyReference
+      keyReference,
+      title,
+      description,
+      mintedBy: wallet._id
     });
 
     await coinKey.save();
@@ -35,6 +45,7 @@ export const mintCoinKey = async (req, res) => {
       to: wallet._id,
       coinKey: coinKey._id
     });
+
     await tx.save();
 
     res.status(201).json({ message: 'CoinKey minted successfully', coinKey });
@@ -43,6 +54,7 @@ export const mintCoinKey = async (req, res) => {
     res.status(500).json({ message: 'Error minting CoinKey' });
   }
 };
+
 
 
 // 2. Clone Tier II CoinKeys from a Tier I
@@ -55,7 +67,7 @@ export const createTierIICopies = async (req, res) => {
 
     const wallet = await Wallet.findOne({ user: ownerId });
     const original = await CoinKey.findById(tierIId);
-    if (!original || original.tier !== 'TierI') return res.status(400).json({ message: 'Invalid Tier I key' });
+    if (!original || original.tier !== 1) return res.status(400).json({ message: 'Invalid Tier I key' });
 
     if (original.wallet.toString() !== wallet._id.toString()) {
       return res.status(403).json({ message: 'Not owner of Tier I key' });
@@ -65,7 +77,7 @@ export const createTierIICopies = async (req, res) => {
     for (let i = 0; i < numberOfCopies; i++) {
       tierIICopies.push({
         movieId: `${original.movieId}_copy_${i + 1}`,
-        tier: 'TierII',
+        tier: 2,
         wallet: wallet._id,
         keyReference: original.keyReference
       });
