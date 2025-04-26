@@ -1,5 +1,5 @@
 import CoinKeyRental from '../models/coinKeyRental.js';
-import CoinKey from '../models/coinKey.js';
+import CoinKey from '../models/coinkey.js';
 
 // Create a new rental (Tier III) - valid for 1 year
 export const rentCoinKey = async (req, res) => {
