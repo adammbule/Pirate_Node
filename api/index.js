@@ -16,8 +16,8 @@ const port = 4000;
 
 // Rate Limiting Setup (5 requests per 10 seconds)
 const rateLimiter = new RateLimiterMemory({
-  points: 5,
-  duration: 10,
+  points: 100,
+  duration: 2,
 });
 
 // Middleware to parse JSON
@@ -26,7 +26,7 @@ app.use(express.json());
 // CORS Setup - Allow all origins
 app.use(cors({
   origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  methods: ['GET', 'POST', 'PUT'],
   credentials: false, // Set to true if you want to allow cookies; needs a specific origin then
 }));
 

@@ -82,7 +82,7 @@ const googleLogin = async (req, res) => {
     // Verify the Google ID token
     const ticket = await client.verifyIdToken({
       idToken: idToken,
-      audience: process.env.clientid,
+      audience: '653453076719-rgmdbrp1eka5rni16q7mrcfep5t3vcbl.apps.googleusercontent.com',
     });
 
     // Extract the payload from the ticket
