@@ -81,4 +81,37 @@ export const getMovieDetails = async (req, res) => {
   }
 };
 
+export const searchMovie = async (req, res) => {
+const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication token is missing' });
+  }
+  try{
+    const { searchparams } = req.params;
+      const url = `${TMDB_BASE_URL}/3/search/movie?query=${searchparams}&include_adult=false&language=en-US&page=1`;
+      const options = {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `${TMDB_API_KEY}`,
+        },
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error ${response.status}: ${errorText}`);
+      }
+
+      const json = await response.json();
+      return res.json(json);
+
+    } catch (error) {
+      console.error('Error fetching movie details:', error);
+      return res.status(500).json({ message: 'Error fetching movie details or invalid token', error: error.message });
+    }
+  };
+
 export default getTrendingMovies;

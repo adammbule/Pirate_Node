@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 
 dotenv.config({ path: "../subkey.env" });
 
+const TMDB_API_KEY = process.env.Bearer;
+const JWT_SECRET = process.env.JWT_SECRET;
+const TMDB_BASE_URL = process.env.tmurl2;
+
 const tmdbUrl = process.env.tmurl2;
 const bearer = process.env.Bearer;
 
@@ -107,3 +111,37 @@ export const getSeasonDetails = async (req, res) => {
     return res.status(500).json({ message: 'Error fetching season details' });
   }
 };
+
+
+export const searchShow = async (req, res) => {
+const token = req.headers.authorization?.split(' ')[1];
+
+  if (!token) {
+    return res.status(401).json({ message: 'Authentication token is missing' });
+  }
+  try{
+    const { searchparams } = req.params;
+      const url = `${TMDB_BASE_URL}/3/search/tv?query=${searchparams}&include_adult=false&language=en-US&page=1`;
+      const options = {
+        method: 'GET',
+        headers: {
+          accept: 'application/json',
+          Authorization: `${TMDB_API_KEY}`,
+        },
+      };
+
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP error ${response.status}: ${errorText}`);
+      }
+
+      const json = await response.json();
+      return res.json(json);
+
+    } catch (error) {
+      console.error('Error fetching show details:', error);
+      return res.status(500).json({ message: 'Error fetching show details or invalid token', error: error.message });
+    }
+  };
