@@ -52,20 +52,22 @@ const login = async (req, res) => {
       return res.status(401).json({ message: 'Incorrect password' });
     }
 
-    // If passwords match, generate a JWT token for the user
-    const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    // Generate a JWT token for the user
+        const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    console.log(`Login successful for user: ${user.username} (Email: ${user.email})`);
-    console.log('Generated JWT Token:', token);
+        console.log('Generated JWT Token:', token);
 
-    user.sessionKey = token;
-    await user.save();
+        user.sessionKey = token;
+        await user.save();
 
-    res.status(200).json({
-      message: 'Login successful',
-      token: token,
-      sessionKey: token,
-    });
+        res.status(200).json({
+          message: 'Manual login successful',
+          token: token,
+          sessionKey: token,
+          email:email,
+          username: user.username,
+          UUID: user._id
+        });
   } catch (error) {
     console.error('Server error during login:', error.message);
     res.status(500).json({ message: 'Server error', error: error.message });
