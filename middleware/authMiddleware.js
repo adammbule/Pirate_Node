@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken';
+import redis from '../middleware/redis.js';
+import { isTokenBlacklisted } from './tokenManagement.js';
 
-const verifyJWT = (req, res, next) => {
+const verifyJWT = async (req, res, next) => {
   const authHeader = req.headers.authorization;
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -9,6 +11,11 @@ const verifyJWT = (req, res, next) => {
 
   const token = authHeader.split(' ')[1];
   console.log('Token received:', token);
+
+  const blacklisted = await isTokenBlacklisted(token);
+    if (blacklisted) {
+      return res.status(401).json({ message: "Token invalidated" });
+    }
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET); // Use the actual token from the request

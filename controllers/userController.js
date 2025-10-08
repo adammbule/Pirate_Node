@@ -5,6 +5,8 @@ import bcrypt from 'bcrypt';
 import User from '../models/user.js';
 import mongoose from 'mongoose';
 import {GoogleAuth} from 'google-auth-library';
+import redis from '../middleware/redis.js';
+import { blacklistToken } from "../middleware/tokenManagement.js";
 
 dotenv.config({ path: "../subkey.env" });
 // MongoDB Connection Logic
@@ -15,15 +17,15 @@ mongoose.connect(process.env.db_pass, {
 });
 
 mongoose.connection.on('connected', () => {
-  console.log('MongoDB connection established');
+  console.log('DB connection established');
 });
 
 mongoose.connection.on('error', (err) => {
-  console.error('MongoDB connection error:', err);
+  console.error('DB connection error:', err);
 });
 
 mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB connection disconnected');
+  console.log('DB connection disconnected');
 });
 
 // OAuth2 Client setup for Google login
@@ -40,7 +42,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email: email });
 
     if (!user) {
-      console.log(`User with email ${email} not found`);
+      console.log(`User with email/password not found`);
       return res.status(400).json({ message: 'User not found' });
     }
 
@@ -48,14 +50,14 @@ const login = async (req, res) => {
     const passwordMatch = await bcrypt.compare(password, user.password);
 
     if (!passwordMatch) {
-      console.log(`Incorrect password for email: ${email}`);
-      return res.status(401).json({ message: 'Incorrect password' });
+      console.log(`Incorrect password/email`);
+      return res.status(401).json({ message: 'Incorrect password/email' });
     }
 
     // Generate a JWT token for the user
         const token = jwt.sign({ userId: user._id, username: user.username }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        console.log('Generated JWT Token:', token);
+       // console.log('Generated JWT Token:', token);
 
         user.sessionKey = token;
         await user.save();
@@ -84,7 +86,7 @@ const googleLogin = async (req, res) => {
     // Verify the Google ID token
     const ticket = await client.verifyIdToken({
       idToken: idToken,
-      audience: '653453076719-rgmdbrp1eka5rni16q7mrcfep5t3vcbl.apps.googleusercontent.com',
+      audience: process.env.GOOGLE_ID_AUDIENCE,
     });
 
     // Extract the payload from the ticket
@@ -106,7 +108,7 @@ const googleLogin = async (req, res) => {
       });
       await user.save();
     } else {
-      console.log(`User found in the database: ${user.username} (Email: ${user.email})`);
+      console.log(`User found in the database`);
     }
 
     // Generate a JWT token for the user
@@ -167,6 +169,26 @@ const createuser = async (req, res) => {
   } catch (error) {
     console.error('Error creating user:', error.message);
     res.status(500).json({ message: 'Error creating user', error: error.message });
+  }
+};
+
+// blacklist token for its remaining lifetime
+export const logout = async (req, res) => {
+  try {
+    const token = req.header("Authorization")?.replace("Bearer ", "");
+    if (!token) return res.status(400).json({ message: "No token provided" });
+
+    // Decode token expiry (in seconds)
+    const decoded = jwt.decode(token);
+    const ttl = decoded?.exp ? decoded.exp - Math.floor(Date.now() / 1000) : 3600;
+
+    // Save token to Redis blacklist
+    await blacklistToken(token);
+
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error during logout" });
   }
 };
 

@@ -1,7 +1,3 @@
-/**
- * TODO(developer):
- *  1. Uncomment and replace these variables before running the sample.
- */
 import {GoogleAuth} from 'google-auth-library';
 const targetAudience = 'https://piratenode.onrender.com/';
 
