@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'; // Ensure node-fetch is imported
 import dotenv from 'dotenv';
+import redis from '../middleware/redis.js';
 
 dotenv.config({ path: "../subkey.env" });
 
@@ -18,6 +19,15 @@ export const getTrendingSeries = async (req, res) => {
   if (!token) {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
+
+  const blacklisted = await redis.get(`blacklist:${token}`);
+  
+      
+      if (blacklisted) {
+        console.warn("🚫 Token is blacklisted!");
+        return res.status(401).json({ message: "Token has been invalidated" });
+      }
+      console.log("🧾 Redis check:", blacklisted);
 
   const url = `${tmdbUrl}/3/trending/tv/day?language=en-US`;
   const options = {
@@ -49,6 +59,15 @@ export const getSeriesDetails = async (req, res) => {
   if (!token) {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
+
+  const blacklisted = await redis.get(`blacklist:${token}`);
+
+    
+    if (blacklisted) {
+      console.warn("🚫 Token is blacklisted!");
+      return res.status(401).json({ message: "Token has been invalidated" });
+    }
+    console.log("🧾 Redis check:", blacklisted);
 
   const { seriesid } = req.params; // Get the seriesid from the URL parameter
   const url = `${tmdbUrl}/3/tv/${seriesid}?language=en-US`; // Use the seriesid in the URL
@@ -84,6 +103,14 @@ export const getSeasonDetails = async (req, res) => {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
 
+  const blacklisted = await redis.get(`blacklist:${token}`);
+
+    
+    if (blacklisted) {
+      console.warn("🚫 Token is blacklisted!");
+      return res.status(401).json({ message: "Token has been invalidated" });
+    }
+    console.log("🧾 Redis check:", blacklisted);
   const { seriesid, season } = req.params; // Get the seriesid and season from the URL parameters
 
   const url = `${tmdbUrl}/3/tv/${seriesid}/season/${season}?language=en-US`;
@@ -119,6 +146,15 @@ const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
+
+  const blacklisted = await redis.get(`blacklist:${token}`);
+
+    
+    if (blacklisted) {
+      console.warn("🚫 Token is blacklisted!");
+      return res.status(401).json({ message: "Token has been invalidated" });
+    }
+    console.log("🧾 Redis check:", blacklisted);
   try{
     const { searchparams } = req.params;
       const url = `${TMDB_BASE_URL}/3/search/tv?query=${searchparams}&include_adult=false&language=en-US&page=1`;
