@@ -1,6 +1,7 @@
 import fetch from 'node-fetch';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import redis from '../middleware/redis.js';
 
 dotenv.config({ path: '../subkey.env' });
 
@@ -14,6 +15,15 @@ export const getTrendingMovies = async (req, res) => {
   if (!token) {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
+
+  const blacklisted = await redis.get(`blacklist:${token}`);
+
+    
+    if (blacklisted) {
+      console.warn("🚫 Token is blacklisted!");
+      return res.status(401).json({ message: "Token has been invalidated" });
+    }
+    console.log("🧾 Redis check:", blacklisted);
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
@@ -50,6 +60,14 @@ export const getMovieDetails = async (req, res) => {
   if (!token) {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
+  const blacklisted = await redis.get(`blacklist:${token}`);
+
+    
+    if (blacklisted) {
+      console.warn("🚫 Token is blacklisted!");
+      return res.status(401).json({ message: "Token has been invalidated" });
+    }
+    console.log("🧾 Redis check:", blacklisted);
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
@@ -87,6 +105,12 @@ const token = req.headers.authorization?.split(' ')[1];
   if (!token) {
     return res.status(401).json({ message: 'Authentication token is missing' });
   }
+  const blacklisted = await redis.get(`blacklist:${token}`);
+
+    if (blacklisted) {
+      console.warn("🚫 Token is blacklisted!");
+      return res.status(401).json({ message: "Token has been invalidated" });
+    }
   try{
     const { searchparams } = req.params;
       const url = `${TMDB_BASE_URL}/3/search/movie?query=${searchparams}&include_adult=false&language=en-US&page=1`;
