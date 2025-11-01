@@ -7,10 +7,8 @@ const movieSchema = new mongoose.Schema({
   rating: { type: Number },
   description: { type: String },
   posterUrl: { type: String },
-  imid: { type: String},
 });
 
 const Movie = mongoose.model('Movie', movieSchema);
 
 export default mongoose.models.Movie || mongoose.model('Movie', movieSchema);
-

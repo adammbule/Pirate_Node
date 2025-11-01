@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 
 const coinKeySchema = new mongoose.Schema({
-  piratecoinId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }, // optional
-  tmid: { type: String, required: false },
-  imid: { type: String, required: false },
+  movieId: { type: mongoose.Schema.Types.ObjectId, ref: 'Movie' }, // optional
   mintedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'Wallet', required: false },
   title: { type: String, required: false },
   description: { type: String },
