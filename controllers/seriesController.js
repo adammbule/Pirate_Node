@@ -70,7 +70,7 @@ export const getSeriesDetails = async (req, res) => {
     console.log("🧾 Redis check:", blacklisted);
 
   const { seriesid } = req.params; // Get the seriesid from the URL parameter
-  const url = `${tmdbUrl}/3/tv/${seriesid}?language=en-US`; // Use the seriesid in the URL
+  const url = `${tmdbUrl}/3/tv/${seriesid}?append_to_response=videos&language=en-US`; // Use the seriesid in the URL
   console.log('Request URL:', url);
 
   const options = {

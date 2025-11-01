@@ -66,6 +66,7 @@ export const getMovieDetails = async (req, res) => {
     if (blacklisted) {
       console.warn("🚫 Token is blacklisted!");
       return res.status(401).json({ message: "Token has been invalidated" });
+    
     }
     console.log("🧾 Redis check:", blacklisted);
 
@@ -74,7 +75,7 @@ export const getMovieDetails = async (req, res) => {
     console.log('Authenticated user:', decoded.username);
 
     const { movieid } = req.params;
-    const url = `${TMDB_BASE_URL}/3/movie/${movieid}?language=en-US`;
+    const url = `${TMDB_BASE_URL}/3/movie/${movieid}?append_to_response=videos&language=en-US`;
     const options = {
       method: 'GET',
       headers: {
