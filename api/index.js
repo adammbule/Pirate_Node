@@ -10,6 +10,7 @@ import collectionRoutes from '../routes/collectionRoutes.js';
 import cors from 'cors';
 import { waitUntil } from '@vercel/functions';
 import { RateLimiterMemory } from 'rate-limiter-flexible';
+import transactionRoutes from '../routes/transactionRoutes.js';
 
 const app = express();
 const port = 4000;
@@ -53,6 +54,7 @@ app.use('/api/wallet', walletRoutes);
 app.use('/api/collection', collectionRoutes);
 app.use('/api/coinkey', coinkeyRoutes);
 app.use('/api/coinkeyrental', coinKeyRentalRoutes);
+app.use('/api/transactions', transactionRoutes);
 
 // Welcome endpoint
 app.get('/api', (req, res) => {

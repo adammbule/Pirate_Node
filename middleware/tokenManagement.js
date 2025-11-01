@@ -16,6 +16,7 @@ export const blacklistToken = async (token) => {
     if (ttl > 0) {
       await redis.setex(`${BLACKLIST_PREFIX}${token}`, ttl, "blacklisted");
       console.log(`🚫 Token blacklisted for ${ttl}s`);
+      
     }
   } catch (error) {
     console.error("❌ Failed to blacklist token:", error);

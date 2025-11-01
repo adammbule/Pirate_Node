@@ -113,7 +113,7 @@ export const getSeasonDetails = async (req, res) => {
     console.log("🧾 Redis check:", blacklisted);
   const { seriesid, season } = req.params; // Get the seriesid and season from the URL parameters
 
-  const url = `${tmdbUrl}/3/tv/${seriesid}/season/${season}?language=en-US`;
+  const url = `${tmdbUrl}/3/tv/${seriesid}/season/${season}?append_to_response=videos&language=en-US`;
 
   console.log('Request URL:', url);
 
